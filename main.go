@@ -9,9 +9,9 @@ import (
 func main() {
 	fmt.Println("Go Tour - equivalent binary tree")
 	t1 := tree.New(1)
-	// t2 := tree.New(2)
-	// ch1, ch2 := make(chan int), make(chan int)
+	t2 := tree.New(1)
 
+	// This is how to print tree
 	fmt.Print("Tree 1: ")
 	ch := make(chan int)
 	go func() {
@@ -23,7 +23,19 @@ func main() {
 	}
 	fmt.Println()
 
-	// fmt.Println(same(t1, t2))
+	fmt.Print("Tree 2: ")
+	ch = make(chan int)
+	go func() {
+		walk(t2, ch)
+		close(ch)
+	}()
+	for v := range ch {
+		fmt.Printf("%d ", v)
+	}
+	fmt.Println()
+
+	// Check whether tree is equivalent
+	fmt.Println(same(t1, t2))
 }
 
 func walk(t *tree.Tree, ch chan int) {
